@@ -1,0 +1,551 @@
+                        REACT - REDUX TUTORIAL
+
+                                A. JAVASCRIPT ES6
+
+1. Single Page Application
+2. Spread Operator: 
+- Set of data in an element is extended in another element
+    ex: set1 = {
+        name: "Akhilesh",
+        email: "ak@gmail.com"
+    }
+
+    **  set2 = {
+        ...set1,        # Spread Operator
+        age: 23
+    }
+
+3. Destructuring: Unpack a set of values and assign to induvidual variables
+    ex1:
+        values = [10, 20, 30];
+        [a, , c] = values;     // a= 10, c= 30
+
+    ex2:
+        set1 = {
+        name: "Akhilesh",
+        email: "ak@gmail.com"
+    }
+
+    const {email, name} = set1;    // follows naming convention
+
+4. Rest Operator: Accept infinite arguments to an array
+    ex: 
+        const array = (a, ...arr) => console.log(arr)
+        array(10,20,30,40,55)           // a= 10, rest all prints [20,30,40,55]
+
+
+5. Arrays:-
+    a. pop()
+    b. shift() - remove from start
+    c. splice(index, how_many) - remove using indexes
+    d. push()
+    e. arr.indexof() - find index of element
+
+
+                                 B. REACT
+
+--> Components
+--> Work with data
+
+
+1. Class vs Functional Components
+    a. Class Component:
+        - extends Component Class
+        - manage state and lifecycle methods on its own
+        - In class comp., use 'this' keyword to access state or props
+    ex1: 
+    import React, { Component } from 'react'
+
+    export default class ClassComponent extends Component {
+        state = {
+            name: "State Change?",
+        }
+
+    render() {
+        return (
+        <div>
+            <h2>This State is {this.state.name}</h2>
+        </div>
+        )
+    }
+
+
+    b. Functional Component:
+        - Can't manage state and lifecycle methods on its own
+        - useState hook: to manage state
+        - useEffect hook: to manage lifecycle methods
+
+
+2. State vs Props
+
+A. State:
+    - object which stores the data, that changes over time
+    - single or multi values
+
+B. Props:
+    - Used to pass the data from parent to child
+
+
+3. Styling in React
+- camel Case 
+- {{write css in this}}
+
+4. Event Handler
+
+A. OnClick 
+- <button onClick = {()=> c.log("clicked")} />
+- Mostly use using "useState"
+
+B. onChange
+- get data from user and handle properly
+- assign value using useState hook
+
+C. onSubmit
+- 
+const [user, setUser] = useState("");
+const handler =(e) => {
+        setUser(e.target.value);
+}
+<input 
+    type="text" 
+    placeholder="username" 
+    value={user} name="user"
+    onChange={handler} /> 
+
+
+5. useState
+- hook for handling state in functional Components
+- It has object for state and function to change that state
+
+6. useEffect
+- life cycle hook
+- Execute some function after the return function
+- 2 params: function & dependencies
+    - Function execute whenever, dependencies value updates or else everytime after return stmt
+
+
+7. Map & Filter
+
+A. Map
+- to traverse a array of values or objects
+- print in induvidual Component or use in induv. component
+- Values: array.map((value, index) => <li key={index}>{value}</li>)
+- Objects: array.map((item) => ( <li key={item.id}>{item.title}</li> ))
+
+B. Filter
+- filter based on condition
+- const filtered = arr_f.filter(name => name.includes('e'))
+- const filtered = arr_f.filter(num => num > 10)
+- { filtered.map((item, index) => <li key={index}>{item}</li>) }
+
+
+8. export vs export default
+
+A. export
+- import {Component}
+
+
+B. export default
+- import Component
+- default?
+
+9. Login Form Submit in reactjs
+- onClick, onChange, onSubmit
+- useState
+- Destructuring
+
+a. useState hook
+- to store the data fetched
+- const [data, setData] = useState({
+    username: "",
+    password: "",
+  });
+
+b. Destructuring
+- to use object data in variables
+- const { username, password } = data;
+
+c. Event handling
+
+i. onChange
+- const changeHandler = e => {
+    setData({...data, [e.target.name]:[e.target.value]})
+  }
+
+- <input type="text" name="username" value={username} onChange={changeHandler} />
+
+
+ii. onSubmit
+-   const submitHandler = e => {
+      e.preventDefault();
+      if(password === confirmPassword){
+        console.log(data);
+      }
+      else{
+        console.log("Passwords aren't matching");
+      }
+    }
+- <input type="submit" name="submit" onSubmit={submitHandler}/>
+
+
+10. Form Validation
+- can add. validation in submitHandler
+
+11. Calculator Application
+- eval(input): evaluates any text expression
+
+====> PART 2: API's, Hooks, Router 
+
+1. Fetch()
+- http requests
+- certain amount of api data is accessed with url
+- Mostly used in the "useEffect" Hooks
+- fetch(url)
+    .then(response => response.json())
+    .then(json => setData(json))
+         - response => response.json()
+             * if the info is not in json, it converts to json format
+- "useState" hook is used to store the fetched data.
+    -  const [data, setData] = useState([])
+- Use data by mapping
+    - {data.map(item => <li key={item.od}>{item.title}</li>)}
+
+
+2. Axios Package
+- http requests handling
+- in "useEffect" hook
+- Example:
+    useEffect(() => {
+        axios.get('https://jsonplaceholder.typicode.com/todos')
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }, []);
+
+
+3. Submit ReactJS form in Firebase Database (Pending...)
+- Firebase is a cloud platform with gmail
+- Database can be created and projects can be deployed
+
+
+4. React Router
+- Route to multi pages
+- for fast routing, as in single page applications everything is reloaded
+- npm install react-router-dom
+- Components of React Router dom
+    -->  for Http Routing activities
+    a. BrowserRouter
+        b. Routes: Switching activities
+            c. Route
+                - path:     For which URL
+                - component: Direct to which component
+                - must use exact keyword
+    -> Link: 
+        -to hit the URL on clicked i.e. https:..../home 
+
+CODE 1:
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+<div className="App">
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} /> {/* Use element prop */}
+          <Route path="/about" element={<About />} /> {/* Use element prop */}
+          <Route path="/dashboard" element={<Dashboard />} /> {/* Use element prop */}
+        </Routes>
+      </BrowserRouter>
+</div>
+
+CODE 2:
+
+import { Link } from "react-router-dom";
+
+<Link to="/home"><li>Home</li></Link>
+
+
+5. Redirecting in React ("useNavigate Hook")
+- navigate from one page to other page if authenticated
+- Redirecting from one page to another
+
+- Ex: Home -> Dashboard 
+
+    import {useNavigate } from "react-router-dom";
+
+    const [auth, setAuth] = useState(false);
+    const navigate = useNavigate(); // useNavigate hook replaces Redirect
+
+    if (auth) 
+    {
+        navigate("/dashboard"); // Programmatically navigate to the dashboard
+    }
+
+7. Path Params vs Query Params ("useParams()")
+
+
+- In MPA, Sending data from one component to another using Using URL
+- Two ways
+    A. Path Params
+     * If we know the variable names before handed
+     * use same name while "Destructuring", as sent in path param name. (V.V.Imp)
+     Ex: 
+        - http:..../profile/akhilesh
+
+        <Route path="/profile/:name" component={Profile} /> 
+            Ans. name = akhilesh 
+
+     * Destructuring parameter using useParams from r-r-dom
+        - const {name} = useParams()
+           // use it
+
+            
+
+    B. Query Params
+     * If we don't know the var. names
+     * Send data with Var. Names
+     * We can use the particular var. given by url
+
+     Ex:
+        - http:..../profile?name=nikhilesh
+        <Route path="/profile" component={Profile} /> 
+            Ans. name = nikhilesh 
+
+8. Import Images, Audios and Videos
+
+A. Images
+- import {Img_name} from './react.png'
+- <img src={Img_name} height="200" width="auto" />
+
+B. Audios
+- import {file_name} from './ak.mp3'
+-   <audio controls>  // controls- for start, stop and play
+        <source src={file_name} audio="audio/ogg" />
+    </audio>
+
+C. Videos
+- import {video_name} from './vid.mp4'
+  <video width="" height="" controls>
+    <source src={video_name} type="video/mp4"/>
+  </video>
+
+
+9. useContext Hook            - (V.V.Important)
+- Context: 
+    * Passing props or data, through component tree without having to pass props down manually at every level.
+- Avoid prop drilling
+- Send props directly from one comp to another without passing through a tree.
+
+Steps:
+* creating context Hook 
+* send data to component by creating "Provider".
+* Use the props with the help of "Consumer"
+
+Code:
+--> In Sending Component ("useContext.js")
+ i. export const UserContext = React.createContext();
+    - export context for reciever to use
+
+ ii. <UserContext.Provider value={"Akhilesh"}>
+        <Recieving_Component>
+     </UserContext.Provider>
+
+     - Wrapping the recieving component in Provider
+     - Attaching data or props to "Provider"
+
+--> Recieving Component or Consumer Class (ComponentC.js - value={"Akhilesh"})
+    
+    - import { UserContext } from "./ContextProviderComponent";
+    - const value = useContext(UserContext);
+        * with the help of useContext hook we can use it
+
+--> Add Provider comp to App.js
+
+
+10. CLASS BASED COMPONENTS 
+ - 16.8 HOOKS 
+
+ ==> lifecycle methods
+ a. componentDidMount
+    - renders immediately after render
+    - to make api calls
+
+
+12. useRef Hook
+ - get values from user and assign it to variable 
+ - useState: re-render the content change and update the Using
+ - useRef: doesn't notify you when content changes. 
+    - Mutating the (.current) prop doesn't re render
+    - Uses:
+        a. Auto focus, store previous values
+        const data = useRef(null);
+
+        useEffect(()=> {
+            data.current.focus();
+        }, [])
+
+
+13. useReducer
+- const [state, dispatch] = useReducer(reducer, init_arg, init)
+- reducer accepts state & action => newState
+- unlike REDUX, it uses const var. to store state values
+CODE:
+- const initialState = {  count : 0   }
+
+- function reducer(state, action){
+    switch(action.type){
+        case 'increment':
+            return {count: state.count + 1}
+        case 'decrement':
+            return {count: state.count - 1}
+        default:
+            throw new Error()
+    }
+}
+
+- const [state, dispatch] = useReducer(reducer, initialState);
+
+
+- Count: {state.count}
+<button onClick={()=> dispatch({type: 'decrement'})}> - </button>
+
+14. ContextAPI
+ - Used to share the data with multiple Components
+ - Without passing data through props manually
+ - Avoid prop drilling 
+ - Used for small applications
+
+ Step 1. Create a context and set the data
+
+import React, { createContext, useState } from "react";
+
+export const store = createContext();
+
+const contextAPI = () => {
+  const [data, setData] = useState(0);
+
+  return (
+    <store.Provider value={[data, setData]}>
+      <div>contextAPI</div>
+      <ComponentA />
+      <ComponentB />
+    </store.Provider>
+  );
+
+ Step 2. Import & Use the context using useContext Hook
+
+import React, {useContext} from 'react'
+import {store} from './contextAPI'
+
+const CompA = () => {
+    const [data, setData] = useContext(store)
+
+    {data} - to print
+
+
+15. Higher Order Component
+ - Advance technique in react for "reusing component logic".
+ - Def. : Function that takes a component and returns a new Component
+ - Wrapping component with HOC
+ Code:
+ - const HOC = (Component) => {
+  return (
+    class extends React.Component{
+        render(){
+            return(
+                <div>
+                    {this.state.auth ? <Component /> : <h1>Please login !!</h1>}
+                </div>
+            )
+        }
+
+Wrapping CODE:
+- export default HOC(Random)
+
+
+16. useMemo() ReactJS
+ - To avoid unnecessary re rendering
+ - Similar to useEffect hook concept but avoid re rendering of unchanged states
+ - Improve performance of application while performing complex function
+ - Runs "DURING RENDERING" of component
+ 
+ 17. useEffect vs useMemo 
+   A. useEffect
+    i.  after rendering of component
+    ii. use functionality - with logic validation
+
+   B. useMemo 
+    i. during rendering of the component
+    ii. Recalculate during the rendering
+    
+
+18. Statefull vs Stateless
+
+ A. Statefull
+ - In any component, state values are declared  or handled on it's own
+
+ B. Stateless
+ - We're not returning state values
+ - return jsx, html
+
+19. Controlled vs Uncontrolled
+ 
+ A. Controlled
+ - element data is controlled by parent components through callback like onChange()
+
+ B. Uncontrolled
+ - Data controlled by DOM, not by callbacks
+ Ex: Form Data
+
+
+ Important: Pass Data from Child Component to Parent using 'Callback Functions'
+
+20. React Lazy Loading [React.Lazy()]
+ - Def: Component is Loaded only when routed
+ - Used to increase the loading speed of the application with dynamic import concept
+ - Dynamic Importing or Code splitting
+    {
+        idea of "bundling" is Important
+    }
+
+ A. BUNDLING 
+    - Files are bundled using "Default: Webpack", rollup or Browserify
+    - More than 1 file, make it bundle
+    - For Deploying
+
+ 
+cmd>  npm run build            --> main file: chunk.js
+        - Single main JS file 
+
+    code:
+        const Home = React.lazy(()=> import('file_path))
+          - Do with components only
+
+ B. Fallback
+  - if you try lazy loading other than routing, you get fallback error
+  - Handled 
+    -->
+        <Component fallback=(<div>Loading</div>)>
+            <LazyComponent />
+        <Component />
+
+21. Error Boundaries in React
+ - Treat multiple errors and handle using fallback 
+ - component errors which can't handled by try...catch
+ - <ErrorBoundary />
+     - Def: Error boundary component will catch JS errors anywhere in child component tree and display a "fallback UI"
+     - Usage:
+        <ErrorBoundary>
+            <ComponentA />
+        </ErrorBoundary>
+
+    - componentDidCatch(error){
+        this.setState({
+            error: error
+        })
+    }
+
+    if(this.state.error){
+        return <ErrorUI />
+    }
