@@ -1,0 +1,286 @@
+					REDUX
+
+1.	INTRODUCTION
+-	Redux is predicatable state container for JS apps
+    -Can be used with any lang
+-	It’s a state container
+-	Store and manage the application state
+-	All state transitions are explicit and can kept track of it
+-	State contained outside the containers
+
+a. React-Redux:
+- for binding 2 libraries
+- replaced by useReducer + ContextAPI
+
+        2. 	3 CORE CONCEPTS
+
+-	STORE: 	Holds state
+-	ACTION: 	Describe change in state
+-	REDUCER:	Ties stores and actions together. Carries on state transition
+
+3. Three Principles
+
+i.	State of whole application is stored in a single store
+  -	Maintain appl. State in single object, which is managed by the Redux store
+ii. Only way to change state-  EMITTING ACTION
+-	Know redux about what an action
+	{
+        Type: BUY_CAKE
+	}
+
+iii. To specify how state tree is transformed by action  Write by Pure Reducer
+- Reducer – (prev State, action) => new State
+- const reducer = (state, action) =>{
+switch(action.type) {
+	case BUY_CAKE: return {
+		numofCakes: state.numofCakes – 1
+	}
+}
+
+image 1
+
+1.ACTION
+- Application interact with store
+- POJO
+- 'type' property
+- Carry some information from app to redux store
+- Action Creator
+    - Function that creates an action
+- CODE:
+const BUY_CAKE = "BUY_CAKE";
+
+function buyCake(){
+    return {
+        type: BUY_CAKE,
+        info: 'First action'
+    }
+}
+
+2. REDUCER
+- How app state changes as response to action
+- (previousState, action) => newState
+- note: make a copy of state object
+- CODE:
+
+const initialState = {
+    number: 10
+}
+
+const reducer = (state= initialState, action) =>{
+    switch(action.type){
+        case BUY_CAKE: 
+            return {
+                ...state,   // to keep prev. component props same
+                n: state.n -1,
+            }
+        default:
+            return state
+    }
+}
+
+3. STORE
+- One store, holds app state
+- const createStore = redux.createStore;
+- methods:
+    a. getState()- Access to current statee
+    b. dispatch(action)- allows state to be updated
+    c. subscrible(listener)- Register & Unregister listeners
+
+
+6. MULTIPLE REDUCERS
+- Create independent states and REDUCERS
+- using combineReducers
+- const combineReducers = redux.combineReducers;
+  const rootReducer = combineReducers({
+    cake: cake_reducer,
+    ice_cream: IC_reducer
+})
+- authreducer, useReducer etc.
+
+7. MIDDLEWARE
+- It is suggested way to extend Redux with custom functionality
+- MIDDLEWARE for logging, crash reporting, performing async tasks
+- 3rd party extension, between dispatch action and reaches reducer
+- // redux-logger : logs all the related to redux
+    - createLogger
+- (V.V. Imp) 
+- const applyMiddleware = redux.applyMiddleware;
+- const store = createStore(rootReducer, applyMiddleware(midd_name));
+
+
+8. ASYNC ACTIONS
+- Fetch a list of user from API end pt. and store it in redux store
+    State?
+        - state = {
+            loading: true,
+            data: [],  // List of users
+            error:''
+        }
+
+    Actions?
+        - Fetch_users_request
+        - Fetch_users_success
+        - Fetch_users_failures
+
+    Reducer?
+        - Fetch_users_request
+            loading: true
+        -Fetch_users_success
+            loading: false
+            users: data
+        - Fetch_users_failures
+            loading: false
+            error: error
+
+==> ASYNC ACTION CREATORS
+ 1. AXIOS
+    - Request to an API end point
+
+ 2. redux-thunk
+    - Define async action creators
+    - return function instead action object
+        - func dispatch actions
+
+
+
+    ==> Important keywords and notes
+
+1. Subscribe (Notification)
+    - Calls a listener, when action is dispatched and the state changes
+    - (V.V.Imp)
+    "This function returns UNSUBSCRIBE FUNCTION, which is stored in variable"
+
+2. Unsubscribe
+    - To stop listening to the state changes
+    - On calling return function, it Unsubscribes
+
+    const unsubsrible = store.subscribe(() => {
+        console.log("Current State"+ store.getState());
+    })
+
+    Unsubscribe();
+
+3. Dispatch 
+    - Sends an action to redux store
+    - Can send an object
+    - can send an function, with series of actions
+    
+    store.dispatch(action_name)
+
+4. Action
+    - Object 
+    - {
+        type: // action_name
+        payload: // changing data or info 
+    }
+
+5. Store:
+    - Storage and Management of State
+    - Methods:
+        a.  store.createStore(reducer)
+            * 
+        b.  store.dispatch(action_name)
+        c.  store.subscribe()
+            * Returns unsubscribe method
+        d.  unsubscribe 
+            * Calls that unsubscribe method
+
+6. reducer(state, action)
+    - perform required action logic on state
+    - Handles with switch case
+
+    const reducer = (state, action) => {
+        switch(action.type){
+            case "Increment":
+                return state + 1
+            default:
+                return state
+        }
+    }
+
+7. createStore
+- Initialize Centralized container for state
+
+const redux = require("redux");
+const createStore = redux.createStore;
+
+const store = createStore(reducer);
+// perform functions
+
+
+8. Redux-Thunk MIDDLEWARE
+
+a. Action:
+- JS object with type property
+
+const action = {
+    type: 'Increment'
+}
+
+b. Action creator:
+- Function that creates and return an action
+
+const Increment = ()=>{
+    return {  type: 'Increment' }
+}
+
+=> Concept of MIDDLEWARE
+ - it allows action creators unlike action which are java object
+ - to perform async actions
+ - Instead "store.dispatch(object)" ---> "store.dispatch(function())"
+ - this function can perform ASYNC operations
+ - perform multiple actions, based on state and result of dispatch
+
+note: Async operations: takes time to perform 
+
+CODE:
+const thunkMiddleware = require('react-thunk');
+
+const store = createStore(reducer, applyMiddleware(thinkMiddleware))
+store.dispatch(fetchData());
+
+                    REACT - REDUX
+
+1. Provider:
+- Provide state store to react application
+
+App.js
+
+import {Provider} from 'react-redux'
+import store from './redux/store'
+
+
+<Provider store = {store} >
+      <div className="App">
+        <CakeContainer />
+      </div>
+</Provider>
+
+
+2. mapStateToProps
+- State is mapped to container props
+- gets 'state' and returns object
+
+
+const mapStateToProps = state => {
+    return {
+        numOfCakes: state.numOfCakes
+    }
+}
+
+
+3. mapDispatchToProps
+- get dispatch as argument and return an action 
+- Attaches action to the props
+
+const mapDispatchToProps = dispatch => {
+    return {
+        buyCake: ()=> dispatch(buyCake())
+    }
+}
+
+4. Connect Function
+- connect mapDispatchToProps & mapStateToProps
+
+import {connect} from 'react-redux'
+export default (mapStateToProps, mapDispatchToProps)(CakeContainer);
